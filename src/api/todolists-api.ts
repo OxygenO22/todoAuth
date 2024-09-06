@@ -1,4 +1,5 @@
 import axios, { AxiosResponse } from 'axios'
+import { LoginFormType } from '../features/Login/Login';
 
 const instance = axios.create({
     baseURL: 'https://social-network.samuraijs.com/api/1.1/',
@@ -9,8 +10,14 @@ const instance = axios.create({
 })
 
 export const autthAPI = {
-    login() {
-        return instance.post<ResponseType<{ userId: number }>>('/auth/login');
+    login(data: LoginFormType) {
+        return instance.post<ResponseType<{ userId: number }>>('/auth/login', data);
+    },
+    me() {
+        return instance.get<ResponseType<userType>>('/auth/me');
+    },
+    logOut() {
+        return instance.delete<ResponseType>('/auth/login');
     }
 }
 
@@ -96,4 +103,10 @@ type GetTasksResponse = {
     error: string | null
     totalCount: number
     items: TaskType[]
+}
+
+type userType = {
+    login: string
+    email: string
+    id: number
 }
